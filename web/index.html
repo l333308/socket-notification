@@ -54,19 +54,20 @@ $(document).ready(function () {
     socket.on('new_msg', function(msg){
          $('#content').html('收到消息：'+msg);
          $('.notification.sticky').notify();
+
+        Notification.requestPermission( function(status) {
+            console.log(status); // 仅当值为 "granted" 时显示通知
+            var n = new Notification("后端推送消息", {body: msg}); // 显示通知
+        });
     });
     // 后端推送来在线数据时
     socket.on('update_online_count', function(online_stat){
         $('#online_box').html(online_stat);
+
         Notification.requestPermission( function(status) {
             console.log(status); // 仅当值为 "granted" 时显示通知
-            var n = new Notification("title", {body: online_stat}); // 显示通知
+            var n = new Notification("后端推送来在线数据", {body: online_stat}); // 显示通知
         });
-    });
-
-    Notification.requestPermission( function(status) {
-        console.log(status); // 仅当值为 "granted" 时显示通知
-        var n = new Notification("title", {body: retMsg}); // 显示通知
     });
 });
 </script>
